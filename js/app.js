@@ -273,9 +273,9 @@ board.addEventListener('click', (event) => {
         card.classList.add('is-open');
         if(currentPairs.length === 2) {
             disableCards();
-            checkPairs();
             movesCounter++;
             updateCounters();
+            checkPairs();
         }
     }
 })
