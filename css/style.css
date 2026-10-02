@@ -163,6 +163,10 @@ button:focus-visible {
     box-shadow: 0 3px 0 rgb(66 42 35 / 23%);
 }
 
+.card.disabled:hover {
+    cursor: progress;
+}
+
 .card img {
     position: absolute;
     inset: 3px;
