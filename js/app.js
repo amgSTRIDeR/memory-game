@@ -76,6 +76,9 @@ const board = createElement("section", {
 app.append(header, board);
 
 function createModal({ id, view, titleId, title, closeLabel }) {
+    const dialogWrapper = document.createElement("div");
+    dialogWrapper.classList.add("dialog-wrapper");
+
     const dialog = createElement("dialog", {
         class: "modal",
         id,
@@ -104,7 +107,9 @@ function createModal({ id, view, titleId, title, closeLabel }) {
         }, "✦"),
     );
 
-    dialog.append(form);
+    dialogWrapper.append(form);
+
+    dialog.append(dialogWrapper);
 
     return { dialog, form };
 }
@@ -258,6 +263,7 @@ function resetGame() {
     movesCounter = 0;
     pairsCounter = 0;
     updateCounters();
+    victoryModal.dialog.close();
 }
 
 function updateCounters() {
@@ -382,5 +388,17 @@ newGameButton.addEventListener('click', resetGame);
 victoryNewGameButton.addEventListener('click', resetGame);
 
 
+const leaderBoardModalElement = document.getElementById('leaderboard-modal');
+leaderBoardModalElement.addEventListener('click', (event) => {
+    if(event.target === leaderBoardModalElement ) {
+        leaderboardModal.dialog.close();
+    }
+});
 
+const victoryModalElement = document.getElementById('victory-modal');
+victoryModalElement.addEventListener('click', (event) => {
+    if(event.target === victoryModalElement ) {
+        victoryModal.dialog.close();
+    }
+});
 
