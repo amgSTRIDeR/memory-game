@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../assets/fonts/CormorantGaramond-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+:root {
+    --color-page: #664442;
+    --color-paper: #f4d6cd;
+    --color-dialog: #f8eadd;
+    --color-text: #502c28;
+    --color-light: #f8ddd5;
+    --color-border: #c69d87;
+    --color-border-light: #ecd0b5;
+    --color-card: #2c241f;
+    --color-matched: #f6d3b1;
+    --font: "Cormorant Garamond", Georgia, serif;
+    --button-primary: linear-gradient(#f2c1c3, #d9989f);
+    --button-secondary: linear-gradient(#f8ebdd, #edd8c8);
+}
