@@ -362,6 +362,7 @@ function setLeaderboard() {
     leaderboardTable.hidden = winners.length === 0;
 
     winners.forEach((winner, index) => {
+        if(index > 9) return;
         const row = createElement('tr');
 
         row.append(
