@@ -25,6 +25,10 @@
     box-sizing: border-box;
 }
 
+html:has(dialog[open]) {
+    overflow: hidden;
+}
+
 body {
     margin: 0;
     padding: 0;
