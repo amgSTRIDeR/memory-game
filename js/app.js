@@ -239,6 +239,7 @@ function shuffle(array) {
 
 const leaderBoardButton = document.getElementById("leaderboard-button");
 leaderBoardButton.addEventListener("click", () => {
+    setLeaderboard();
     leaderboardModal.dialog.showModal();
 });
 
@@ -253,6 +254,7 @@ resetGame();
 
 function resetGame() {
     setCards();
+    currentPairs = [];
     movesCounter = 0;
     pairsCounter = 0;
     updateCounters();
@@ -265,21 +267,21 @@ function updateCounters() {
 
 board.addEventListener('click', (event) => {
     const card = event.target;
+    if(!card.classList.contains('card')) return;
     if(!card.classList.contains('is-open') && !card.classList.contains('disabled') && currentPairs.length < 2) {
-        console.log(card.classList)
         currentPairs.push(card);
         card.classList.add('is-open');
-        console.log(currentPairs)
         if(currentPairs.length === 2) {
             disableCards();
             checkPairs();
+            movesCounter++;
+            updateCounters();
         }
     }
 })
 
 function checkPairs() {
     if(currentPairs.length === 2) {
-        movesCounter++;
         if(currentPairs[0].querySelector('.card__front').src === currentPairs[1].querySelector('.card__front').src) {
             pairsCounter++;
             currentPairs = [];
@@ -324,6 +326,7 @@ function enableCards() {
 }
 
 function addWinner() {
+    victoryModal.form.querySelector('#final-moves').textContent = movesCounter;
     victoryModal.dialog.showModal();
     let winners = [];
     if(localStorage.getItem("winners")) {
@@ -332,19 +335,50 @@ function addWinner() {
     winners.push({moves: movesCounter, date: new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })});
     winners.sort((a, b) => {
         if(a.moves === b.moves) {
-            return b.date - a.date;
+            const parseDate = (str) => {
+                const [day, month, year] = str.split('.').map(Number);
+                return new Date(year, month - 1, day).getTime();
+            };
+            return parseDate(a.date) - parseDate(b.date);
         }
-        return b.moves - a.moves});
+        return a.moves - b.moves});
     if(winners.length > 10) {
         winners.pop();
     }
     localStorage.setItem("winners", JSON.stringify(winners));
-    resetGame();
 }
 
-// function setLeaderboard() {
-//
-// }
+function setLeaderboard() {
+    const modal = leaderboardModal.dialog ?? leaderboardModal;
+
+    const leaderboardResults = modal.querySelector('#leaderboard-results');
+    const emptyState = modal.querySelector('.empty-state');
+    const leaderboardTable = modal.querySelector('.leaderboard');
+
+    const winners = JSON.parse(localStorage.getItem('winners')) ?? [];
+
+    leaderboardResults.textContent = '';
+    emptyState.hidden = winners.length > 0;
+    leaderboardTable.hidden = winners.length === 0;
+
+    winners.forEach((winner, index) => {
+        const row = createElement('tr');
+
+        row.append(
+            createElement('td', {}, index + 1),
+            createElement('td', {}, winner.moves),
+            createElement('td', {}, winner.date),
+        );
+
+        leaderboardResults.append(row);
+    });
+}
+
+const newGameButton = document.getElementById('new-game');
+const victoryNewGameButton = document.getElementById('victory-new-game');
+
+newGameButton.addEventListener('click', resetGame);
+victoryNewGameButton.addEventListener('click', resetGame);
 
 
 
